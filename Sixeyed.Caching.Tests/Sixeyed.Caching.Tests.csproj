@@ -121,6 +121,10 @@
       <Project>{04bfbac3-2564-4c15-9f33-b51496144826}</Project>
       <Name>Sixeyed.Caching.Caches.AzureStorage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sixeyed.Caching.Caches.Memcached\Sixeyed.Caching.Caches.Memcached.csproj">
+      <Project>{57f83506-3cc6-4bda-a53e-9edefcf3a30c}</Project>
+      <Name>Sixeyed.Caching.Caches.Memcached</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sixeyed.Caching.Serialization.Serializers.Json\Sixeyed.Caching.Serialization.Serializers.Json.csproj">
       <Project>{b28a32ef-d5cb-4c01-b199-e9ebe6ab8bd7}</Project>
       <Name>Sixeyed.Caching.Serialization.Serializers.Json</Name>

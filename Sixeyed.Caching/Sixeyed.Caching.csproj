@@ -39,10 +39,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Enyim.Caching, Version=2.12.0.0, Culture=neutral, PublicKeyToken=cec98615db04012e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EnyimMemcached.2.12\lib\net35\Enyim.Caching.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -78,7 +74,6 @@
   <ItemGroup>
     <Compile Include="Cache.cs" />
     <Compile Include="CacheKeyBuilder.cs" />
-    <Compile Include="Caches\MemcachedCache.cs" />
     <Compile Include="Configuration\Elements\EncryptionElement.cs" />
     <Compile Include="Serialization\Serializers\NullSerializer.cs" />
     <Compile Include="Spec\CacheBase.cs" />
