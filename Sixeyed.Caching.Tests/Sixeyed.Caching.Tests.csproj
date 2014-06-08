@@ -113,6 +113,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sixeyed.Caching.Caches.AppFabric\Sixeyed.Caching.Caches.AppFabric.csproj">
+      <Project>{226ec57b-b7eb-45a8-bdf3-5420f052fbca}</Project>
+      <Name>Sixeyed.Caching.Caches.AppFabric</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sixeyed.Caching.Caches.AzureStorage\Sixeyed.Caching.Caches.AzureStorage.csproj">
       <Project>{04bfbac3-2564-4c15-9f33-b51496144826}</Project>
       <Name>Sixeyed.Caching.Caches.AzureStorage</Name>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Sixeyed.Caching.Caches.AppFabric;
 using Sixeyed.Caching.Caches.AzureStorage;
 using Sixeyed.Caching.Containers;
 using Sixeyed.Caching.Serialization;
@@ -17,6 +18,7 @@ namespace Sixeyed.Caching.Tests
         public static void Init(TestContext context)
         {
             JsonSerializer();
+            AppFabricCache();
             AzureTableStorageCache();
         }
 
@@ -24,6 +26,12 @@ namespace Sixeyed.Caching.Tests
         {
             var thisAssembly = typeof(JsonSerializer).Assembly;
             Container.RegisterAll<ISerializer>(thisAssembly, Lifetime.Singleton);
+        }
+
+        private static void AppFabricCache()
+        {
+            var thisAssembly = typeof(AppFabricCache).Assembly;
+            Container.RegisterAll<ICache>(thisAssembly, Lifetime.Singleton);
         }
 
         private static void AzureTableStorageCache()
