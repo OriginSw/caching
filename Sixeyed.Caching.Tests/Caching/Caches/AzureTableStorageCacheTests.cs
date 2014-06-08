@@ -73,10 +73,10 @@ namespace Sixeyed.Caching.Tests.Caching
         [TestInitialize]
         public void AssertCacheIsRunning()
         {
-            var processes = Process.GetProcessesByName("DSServiceLDB");
-            if (!processes.Any())
+            if (!Process.GetProcessesByName("DSServiceLDB").Any()
+                && !Process.GetProcessesByName("WAStorageEmulator").Any())
             {
-                Assert.Inconclusive("Azure Compulte Emulator not running locally");
+                Assert.Inconclusive("Azure Storage Emulator not running locally");
             }
         }
     }
