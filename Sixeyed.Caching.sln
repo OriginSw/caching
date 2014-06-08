@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sixeyed.Caching", "Sixeyed.Caching\Sixeyed.Caching.csproj", "{305905AA-7D68-4B40-A4DC-DD4181BAF953}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EF868511-C885-4B7D-A75F-E2A0C7DACEB6}"
@@ -24,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stubs", "Stubs", "{65DFA561
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sixeyed.Caching.Tests.Stubs.Website", "Sixeyed.Caching.Tests.Stubs.Website\Sixeyed.Caching.Tests.Stubs.Website.csproj", "{328E9604-1718-4204-BC50-E0354612A07D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sixeyed.Caching.Serialization.Serializers.Json", "Sixeyed.Caching.Serialization.Serializers.Json\Sixeyed.Caching.Serialization.Serializers.Json.csproj", "{B28A32EF-D5CB-4C01-B199-E9EBE6AB8BD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,10 @@ Global
 		{328E9604-1718-4204-BC50-E0354612A07D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{328E9604-1718-4204-BC50-E0354612A07D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{328E9604-1718-4204-BC50-E0354612A07D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B28A32EF-D5CB-4C01-B199-E9EBE6AB8BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B28A32EF-D5CB-4C01-B199-E9EBE6AB8BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B28A32EF-D5CB-4C01-B199-E9EBE6AB8BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B28A32EF-D5CB-4C01-B199-E9EBE6AB8BD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

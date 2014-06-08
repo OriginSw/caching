@@ -1,11 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sixeyed.Caching.Extensions;
-using System.Threading;
-using Sixeyed.Caching;
-using Sixeyed.Caching.Tests.Stubs;
 using Sixeyed.Caching.Serialization;
-using Sixeyed.Caching.Extensions;
+using Sixeyed.Caching.Tests.Stubs;
+using System;
 
 namespace Sixeyed.Caching.Tests.Serialization
 {

@@ -92,6 +92,7 @@
     <Compile Include="Serialization\Serializers\BinarySerializerTests.cs" />
     <Compile Include="Serialization\Serializers\XmlSerializerTests.cs" />
     <Compile Include="Serialization\Serializers\JsonSerializerTests.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="Stubs\Containers\ConfiguredStub.cs" />
     <Compile Include="Stubs\Containers\ContainedStub.cs" />
     <Compile Include="Stubs\Containers\RepositoryStub.cs" />
@@ -108,6 +109,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sixeyed.Caching.Serialization.Serializers.Json\Sixeyed.Caching.Serialization.Serializers.Json.csproj">
+      <Project>{b28a32ef-d5cb-4c01-b199-e9ebe6ab8bd7}</Project>
+      <Name>Sixeyed.Caching.Serialization.Serializers.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sixeyed.Caching\Sixeyed.Caching.csproj">
       <Project>{305905aa-7d68-4b40-a4dc-dd4181baf953}</Project>
       <Name>Sixeyed.Caching</Name>

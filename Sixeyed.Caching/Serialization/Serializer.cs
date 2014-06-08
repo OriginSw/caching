@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Sixeyed.Caching.Containers;
+using System;
 
 namespace Sixeyed.Caching.Serialization
 {
@@ -11,9 +12,12 @@ namespace Sixeyed.Caching.Serialization
         public static ISerializer GetCurrent(SerializationFormat format)
         {            
             var serializers = Container.GetAll<ISerializer>();
-            return (from s in serializers
-                    where s.Format == format
-                    select s).FirstOrDefault();
+            var serializer = serializers.FirstOrDefault(s => s.Format == format);
+            if(serializer == null)
+            {
+                throw new Exception(string.Format("No {0} serializer has been registered", format));
+            }
+            return serializer;
         }
 
         public static ISerializer Json     
