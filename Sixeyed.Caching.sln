@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sixeyed.Caching.Caches.AppF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sixeyed.Caching.Caches.Memcached", "Sixeyed.Caching.Caches.Memcached\Sixeyed.Caching.Caches.Memcached.csproj", "{57F83506-3CC6-4BDA-A53E-9EDEFCF3A30C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sixeyed.Caching.AOP", "Sixeyed.Caching.AOP\Sixeyed.Caching.AOP.csproj", "{5A1125AE-168B-4AAE-937E-46E89A1D8597}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{57F83506-3CC6-4BDA-A53E-9EDEFCF3A30C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F83506-3CC6-4BDA-A53E-9EDEFCF3A30C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F83506-3CC6-4BDA-A53E-9EDEFCF3A30C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A1125AE-168B-4AAE-937E-46E89A1D8597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1125AE-168B-4AAE-937E-46E89A1D8597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A1125AE-168B-4AAE-937E-46E89A1D8597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1125AE-168B-4AAE-937E-46E89A1D8597}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

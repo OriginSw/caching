@@ -5,7 +5,6 @@ using System.Threading;
 using Sixeyed.Caching;
 using Sixeyed.Caching.Tests.Stubs;
 using Sixeyed.Caching.Serialization;
-using Sixeyed.Caching.Extensions;
 
 namespace Sixeyed.Caching.Tests.Serialization
 {
@@ -17,14 +16,14 @@ namespace Sixeyed.Caching.Tests.Serialization
         {
             var obj = StubRequestWithEnum.GetRequest();
             var expected = string.Format(Xml.InstanceFormat, obj.CreatedOn.ToString("yyyy-MM-dd"), obj.Id, obj.Name, Enum.GetName(typeof(Status), obj.Status));
-            var actual = Serializer.Xml.Serialize(obj);
+            var actual = Serializer.Default.Xml.Serialize(obj);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Deserialize()
         {
-            var obj = Serializer.Xml.Deserialize<StubRequestWithEnum>(Xml.Instance);
+            var obj = Serializer.Default.Xml.Deserialize<StubRequestWithEnum>(Xml.Instance);
             Assert.IsNotNull(obj);
             Assert.AreEqual(732399822, obj.Id);
             Assert.AreEqual("e106b2df-370d-4eb0-b65c-3bbd42c1c26e", obj.Name);

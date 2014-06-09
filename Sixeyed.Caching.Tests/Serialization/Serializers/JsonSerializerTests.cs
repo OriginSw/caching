@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sixeyed.Caching.Extensions;
 using Sixeyed.Caching.Serialization;
+using Sixeyed.Caching.Serialization.Serializers.Json;
 using Sixeyed.Caching.Tests.Stubs;
 using System;
 
@@ -9,19 +10,21 @@ namespace Sixeyed.Caching.Tests.Serialization
     [TestClass]
     public class JsonSerializerTests
     {
+        private JsonSerializer _jsonSerializer = new JsonSerializer();
+
         [TestMethod]
         public void Serialize()
         {
             var obj = StubRequestWithEnum.GetRequest();
             var expected = string.Format(Json.InstanceFormat, "{", obj.Id, obj.Name, obj.CreatedOn.ToString("yyyy-MM-dd"), Enum.GetName(typeof(Status), obj.Status), "}");
-            var actual = Serializer.Json.Serialize(obj);
+            var actual = Sixeyed.Caching.AOP.Cache.Memory.Serializer.Json.Serialize(obj);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Deserialize()
         {
-            var obj = Serializer.Json.Deserialize<StubRequestWithEnum>(Json.Instance);
+            var obj = _jsonSerializer.Deserialize<StubRequestWithEnum>(Json.Instance);
             Assert.IsNotNull(obj);
             Assert.AreEqual(194198183, obj.Id);
             Assert.AreEqual("91aa9c6b-4a0d-4b3f-9269-6bb6868a26ff", obj.Name);

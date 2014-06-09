@@ -113,6 +113,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sixeyed.Caching.AOP\Sixeyed.Caching.AOP.csproj">
+      <Project>{5a1125ae-168b-4aae-937e-46e89a1d8597}</Project>
+      <Name>Sixeyed.Caching.AOP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sixeyed.Caching.Caches.AppFabric\Sixeyed.Caching.Caches.AppFabric.csproj">
       <Project>{226ec57b-b7eb-45a8-bdf3-5420f052fbca}</Project>
       <Name>Sixeyed.Caching.Caches.AppFabric</Name>

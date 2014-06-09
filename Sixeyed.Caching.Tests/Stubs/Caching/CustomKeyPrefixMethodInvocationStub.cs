@@ -5,7 +5,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using Microsoft.Practices.Unity.InterceptionExtension;
 using Moq;
-using Sixeyed.Caching.Containers.Interception.Cache;
+using Sixeyed.Caching.AOP.Interception.Cache;
 
 namespace Sixeyed.Caching.Tests.Stubs
 {

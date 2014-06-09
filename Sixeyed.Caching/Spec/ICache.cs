@@ -12,6 +12,11 @@ namespace Sixeyed.Caching
         CacheType CacheType { get; }
 
         /// <summary>
+        /// Gets or sets the Serializer
+        /// </summary>
+        Serializer Serializer { get; set; }
+
+        /// <summary>
         /// Performs initialisation tasks required for the cache implementation
         /// </summary>
         void Initialise();

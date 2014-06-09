@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Sixeyed.Caching.Containers.Interception.Cache;
-using Sixeyed.Caching.Containers;
+using Sixeyed.Caching.AOP.Interception.Cache;
+using Sixeyed.Caching.AOP;
 
 namespace Sixeyed.Caching.Tests.Stubs
 {

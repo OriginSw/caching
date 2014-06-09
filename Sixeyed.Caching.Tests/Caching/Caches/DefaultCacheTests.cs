@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Sixeyed.Caching.AOP;
 using Sixeyed.Caching.Caches;
 
 namespace Sixeyed.Caching.Tests.Caching

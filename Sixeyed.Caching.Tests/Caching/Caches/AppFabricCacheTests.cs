@@ -6,6 +6,7 @@ using Sixeyed.Caching;
 using Sixeyed.Caching.Tests.Stubs;
 using System.Diagnostics;
 using System.Linq;
+using Sixeyed.Caching.AOP;
 
 namespace Sixeyed.Caching.Tests.Caching
 {

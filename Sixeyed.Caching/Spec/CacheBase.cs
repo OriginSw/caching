@@ -34,6 +34,14 @@ namespace Sixeyed.Caching
             }
         }
 
+        protected Serializer _serializer = new Serializer();
+
+        public Serializer Serializer 
+        {
+            get { return _serializer; }
+            set { _serializer = value;  }
+        }
+
         public abstract CacheType CacheType { get; }
         protected abstract void InitialiseInternal();
         protected abstract void SetInternal(string key, object value);
@@ -176,7 +184,7 @@ namespace Sixeyed.Caching
 
         private ISerializer GetSerializer(SerializationFormat requestedFormat, bool doEncryption)
         {
-            var serializer = Serializer.GetCurrent(SerializationFormat.None);
+            var serializer = Serializer.Null;
             //if we're encrypting, we need to use a known serializer; 
             //otherwise use requested or configured setting
             if (doEncryption)
@@ -185,11 +193,11 @@ namespace Sixeyed.Caching
             }
             else if (requestedFormat != SerializationFormat.Null)
             {
-                serializer = Serializer.GetCurrent(requestedFormat);
+                serializer = Serializer.Get(requestedFormat);
             }
             else if (ItemsNeedSerializing)
             {
-                serializer = Serializer.GetCurrent(CacheConfiguration.Current.DefaultSerializationFormat);
+                serializer = Serializer.Get(CacheConfiguration.Current.DefaultSerializationFormat);
             }
             return serializer;
         }

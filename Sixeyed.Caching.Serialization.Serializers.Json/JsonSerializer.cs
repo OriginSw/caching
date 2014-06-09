@@ -7,7 +7,7 @@ namespace Sixeyed.Caching.Serialization.Serializers.Json
     /// <summary>
     /// JSON implementaion of <see cref="ISerializer"/>
     /// </summary>
-    public class JsonSerializer : ISerializer
+    public class JsonSerializer : IJsonSerializer
     {
         public SerializationFormat Format
         {

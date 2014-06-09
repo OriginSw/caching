@@ -4,6 +4,7 @@ using Sixeyed.Caching.Extensions;
 using System.Threading;
 using Sixeyed.Caching;
 using Sixeyed.Caching.Tests.Stubs;
+using Sixeyed.Caching.AOP;
 
 namespace Sixeyed.Caching.Tests.Caching
 {

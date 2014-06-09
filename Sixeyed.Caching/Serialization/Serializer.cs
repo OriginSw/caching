@@ -1,38 +1,72 @@
 ﻿using System.Linq;
-using Sixeyed.Caching.Containers;
 using System;
+using Sixeyed.Caching.Serialization.Serializers;
 
 namespace Sixeyed.Caching.Serialization
 {
     /// <summary>
     /// Wrapper for accessing <see cref="ISerializer"/> implementations
     /// </summary>
-    public static class Serializer
+    public class Serializer
     {
-        public static ISerializer GetCurrent(SerializationFormat format)
-        {            
-            var serializers = Container.GetAll<ISerializer>();
-            var serializer = serializers.FirstOrDefault(s => s.Format == format);
-            if(serializer == null)
+        private static Serializer _default = new Serializer();
+
+        public static Serializer Default { get { return _default; } }
+
+        public ISerializer Get(SerializationFormat format)
+        {
+            switch (format)
             {
-                throw new Exception(string.Format("No {0} serializer has been registered", format));
+                case SerializationFormat.None:
+                    return this.Null;
+                case SerializationFormat.Json:
+                    return this.Json;
+                case SerializationFormat.Xml:
+                    return this.Xml;
+                case SerializationFormat.Binary:
+                    return this.Binary;
+                case SerializationFormat.Null:
+                    throw new Exception("You must specify a valid SerializationFormat");
+                default:
+                    throw new Exception(string.Format("There is no serializer with format '{0}'", format));
             }
-            return serializer;
         }
 
-        public static ISerializer Json     
+        private static ISerializer _null = new NullSerializer();
+
+        public ISerializer Null
         {
-            get { return GetCurrent(SerializationFormat.Json); }
+            get { return _null; }
+            set { _null = value; }
         }
 
-        public static ISerializer Xml
+        private static IJsonSerializer _json = null;
+
+        public IJsonSerializer Json
         {
-            get { return GetCurrent(SerializationFormat.Xml); }
+            get 
+            {
+                if (_json == null)
+                    throw new Exception("Json Serializer is not configured");
+                return _json;
+            }
+            set { _json = value; }
         }
 
-        public static ISerializer Binary
+        private static ISerializer _xml = new XmlSerializer();
+
+        public ISerializer Xml
         {
-            get { return GetCurrent(SerializationFormat.Binary); }
+            get { return _xml; }
+            set { _xml = value; }
+        }
+
+        private static ISerializer _binary = new BinarySerializer();
+
+        public ISerializer Binary
+        {
+            get { return _binary; }
+            set { _binary = value; }
         }
     }
 }

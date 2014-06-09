@@ -5,7 +5,6 @@ using System.Threading;
 using Sixeyed.Caching;
 using Sixeyed.Caching.Tests.Stubs;
 using Sixeyed.Caching.Serialization;
-using Sixeyed.Caching.Extensions;
 
 namespace Sixeyed.Caching.Tests.Serialization
 {
@@ -16,8 +15,8 @@ namespace Sixeyed.Caching.Tests.Serialization
         public void SerializeAndDeserialize()
         {
             var obj = StubRequestWithEnum.GetRequest();
-            var serialized = Serializer.Binary.Serialize(obj);
-            var deserialized = Serializer.Binary.Deserialize<StubRequestWithEnum>(serialized);
+            var serialized = Serializer.Default.Binary.Serialize(obj);
+            var deserialized = Serializer.Default.Binary.Deserialize<StubRequestWithEnum>(serialized);
             Assert.IsNotNull(deserialized);
             Assert.AreEqual(obj.Id, deserialized.Id);
             Assert.AreEqual(obj.Name, deserialized.Name);

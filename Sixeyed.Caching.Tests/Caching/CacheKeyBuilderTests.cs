@@ -6,9 +6,11 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Microsoft.Practices.Unity.InterceptionExtension;
-using Sixeyed.Caching.Containers.Interception.Cache;
+using Sixeyed.Caching.AOP.Interception.Cache;
 using Sixeyed.Caching;
 using Sixeyed.Caching.Tests.Stubs;
+using Sixeyed.Caching.Serialization;
+using Sixeyed.Caching.Configuration;
 
 namespace Sixeyed.Caching.Tests.Caching
 {
@@ -16,6 +18,8 @@ namespace Sixeyed.Caching.Tests.Caching
     public class CacheKeyBuilderTests
     {
         private Random _random = new Random();
+
+        private static readonly ISerializer _serializer = Serializer.Default.Get(CacheConfiguration.Current.DefaultSerializationFormat);
 
         [TestMethod]
         public void GetCacheKey()
@@ -39,15 +43,15 @@ namespace Sixeyed.Caching.Tests.Caching
         public void GetCacheKey_MethodInvocation()
         {
             var invocation = MethodInvocationStub.GetProxyMock();
-            var key1 = CacheKeyBuilder.GetCacheKey(invocation);
+            var key1 = AOP.CacheKeyBuilder.GetCacheKey(invocation, _serializer);
             Assert.IsTrue(key1.StartsWith("MethodInvocationStub.StubMethod"));
             AssertGuid(key1, true);
             //same input should generate same key:
-            var key1v2 = CacheKeyBuilder.GetCacheKey(invocation);
+            var key1v2 = AOP.CacheKeyBuilder.GetCacheKey(invocation, _serializer);
             Assert.AreEqual(key1, key1v2);
             //different input should generate different key:
             invocation = MethodInvocationStub.GetProxyMock();
-            var key2 = CacheKeyBuilder.GetCacheKey(invocation);
+            var key2 = AOP.CacheKeyBuilder.GetCacheKey(invocation, _serializer);
             Assert.IsTrue(key2.StartsWith("MethodInvocationStub.StubMethod"));
             AssertGuid(key2, true);
             Assert.AreNotEqual(key1, key2);
@@ -57,15 +61,15 @@ namespace Sixeyed.Caching.Tests.Caching
         public void GetCacheKey_MethodInvocation_CustomPrefix()
         {            
             var invocation = CustomKeyPrefixMethodInvocationStub.GetMock();
-            var key1 = CacheKeyBuilder.GetCacheKey(invocation);
+            var key1 = AOP.CacheKeyBuilder.GetCacheKey(invocation, _serializer);
             Assert.IsTrue(key1.StartsWith("*CustomKeyPrefix*"));
             AssertGuid(key1, true);
             //same input should generate same key:
-            var key1v2 = CacheKeyBuilder.GetCacheKey(invocation);
+            var key1v2 = AOP.CacheKeyBuilder.GetCacheKey(invocation, _serializer);
             Assert.AreEqual(key1, key1v2);
             //different input should generate different key:
             invocation = CustomKeyPrefixMethodInvocationStub.GetMock();
-            var key2 = CacheKeyBuilder.GetCacheKey(invocation);
+            var key2 = AOP.CacheKeyBuilder.GetCacheKey(invocation, _serializer);
             Assert.IsTrue(key2.StartsWith("*CustomKeyPrefix*"));
             AssertGuid(key2, true);
             Assert.AreNotEqual(key1, key2);

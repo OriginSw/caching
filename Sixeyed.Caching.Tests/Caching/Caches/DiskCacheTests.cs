@@ -7,6 +7,7 @@ using Sixeyed.Caching.Tests.Stubs;
 using Sixeyed.Caching.Serialization;
 using System.IO;
 using Sixeyed.Caching.Configuration;
+using Sixeyed.Caching.AOP;
 
 namespace Sixeyed.Caching.Tests.Caching
 {
