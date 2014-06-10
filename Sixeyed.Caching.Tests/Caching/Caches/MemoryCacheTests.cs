@@ -12,6 +12,24 @@ namespace Sixeyed.Caching.Tests.Caching
     public class MemoryCacheTests
     {
         [TestMethod]
+        [ExpectedException(typeof(CacheKeyNotFoundException))]
+        public void Get_CacheKeyNotFoundException()
+        {
+            var key = Guid.NewGuid().ToString();
+            Cache.Memory.Get<StubRequest>(key);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CacheValueCastException))]
+        public void Get_Null_CacheValueCastException()
+        {
+            var key = Guid.NewGuid().ToString();
+            int? value = null;
+            Cache.Memory.Set(key, value);
+            var retrievedValue = Cache.Memory.Get<int>(key);
+        }
+
+        [TestMethod]
         public void Set()
         {
             var key = Guid.NewGuid().ToString();
@@ -22,6 +40,18 @@ namespace Sixeyed.Caching.Tests.Caching
             Assert.AreEqual(value.CreatedOn, retrievedValue.CreatedOn);
             Assert.AreEqual(value.Id, retrievedValue.Id);
             Assert.AreEqual(value.Name, retrievedValue.Name);
+        }
+
+        [TestMethod]
+        public void Set_Null()
+        {
+            var key = Guid.NewGuid().ToString();
+            StubRequest value = null;
+            Assert.IsFalse(Cache.Memory.Exists(key));
+            Cache.Memory.Set(key, value);
+            Assert.IsTrue(Cache.Memory.Exists(key));
+            var retrievedValue = Cache.Memory.Get<StubRequest>(key);
+            Assert.IsNull(retrievedValue);
         }
 
         [TestMethod]

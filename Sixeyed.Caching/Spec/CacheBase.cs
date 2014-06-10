@@ -17,6 +17,8 @@ namespace Sixeyed.Caching
         private CacheBase _current;
         private bool _initialised;
 
+        protected const string _NULL_VALUE = "?#_NULL_#?";
+
         protected CacheBase Current
         {
             get 
@@ -110,21 +112,18 @@ namespace Sixeyed.Caching
 
         public T Get<T>(string key, SerializationFormat serializationFormat = SerializationFormat.Null)
         {
-            return (T)Get(typeof(T), key, serializationFormat);
+            var value = Get(typeof(T), key, serializationFormat);;
+            
+            if(value == null)
+                return default(T);
+
+            return (T)value;
         }
 
         public object Get(Type type, string key, SerializationFormat serializationFormat = SerializationFormat.Null)
         {
-            object item = null;
-            try
-            {
-                item = Current.GetInternal(key);
-            }
-            catch (Exception ex)
-            {
-                Log.Warn("CacheBase.Get - failed, item not cached. Message: {0}", ex.Message);
-            }
-            return PostProcess(type, item, serializationFormat);
+            object item = Current.GetInternal(key);
+            return PostProcess(type, key, item, serializationFormat);
         }
 
         public override void Remove(string key)
@@ -157,8 +156,16 @@ namespace Sixeyed.Caching
         {
             object processed = value;
             var doEncryption = CacheConfiguration.Current.Encryption.Enabled;
-            var serializer = GetSerializer(requestedFormat, doEncryption);
-            processed = serializer.Serialize(value);
+
+            if (processed == null)
+            {
+                processed = _NULL_VALUE;
+            }
+            else
+            {
+                var serializer = GetSerializer(requestedFormat, doEncryption);
+                processed = serializer.Serialize(value);
+            }
             if (doEncryption)
             {
                 processed = Encryption.Encrypt((string)processed);
@@ -166,10 +173,10 @@ namespace Sixeyed.Caching
             return processed;
         }
 
-        private object PostProcess(Type type, object value, SerializationFormat requestedFormat)
+        private object PostProcess(Type type, string key, object value, SerializationFormat requestedFormat)
         {
             if (value == null)
-                return value;
+                throw new CacheKeyNotFoundException();
 
             var processed = value;
             var doEncryption = CacheConfiguration.Current.Encryption.Enabled;
@@ -177,9 +184,32 @@ namespace Sixeyed.Caching
             {
                 processed = Encryption.Decrypt((string)processed);
             }
+
+            processed = PostProcessNullValue(type, key, processed);
+            if (processed == null)
+                return null;
+
             var serializer = GetSerializer(requestedFormat, doEncryption);
-            processed = serializer.Deserialize(type, processed);
-            return processed;
+            return serializer.Deserialize(type, processed);
+        }
+
+        private object PostProcessNullValue(Type type, string key, object value)
+        {
+            if (!_NULL_VALUE.Equals(value))
+                return value;
+
+            if (!IsNullable(type))
+                throw new CacheValueCastException(
+                    string.Format("Cache item with key '{0}' has NULL as value but specified type '{1}' is not nullable", key, type.FullName));
+
+            return null;
+        }
+
+        private static bool IsNullable(Type type)
+        {
+            if (!type.IsValueType) return true; // ref-type
+            if (Nullable.GetUnderlyingType(type) != null) return true; // Nullable<T>
+            return false; // value-type
         }
 
         private ISerializer GetSerializer(SerializationFormat requestedFormat, bool doEncryption)

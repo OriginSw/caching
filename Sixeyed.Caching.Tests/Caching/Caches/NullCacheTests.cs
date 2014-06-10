@@ -12,6 +12,7 @@ namespace Sixeyed.Caching.Tests.Caching
     public class NullCacheTests
     {
         [TestMethod]
+        [ExpectedException(typeof(CacheKeyNotFoundException))]
         public void Set()
         {
             var cache = Cache.Get(CacheType.Null);
@@ -20,10 +21,10 @@ namespace Sixeyed.Caching.Tests.Caching
             cache.Set(key, value);
             Assert.IsFalse(cache.Exists(key));
             var retrievedValue = cache.Get<StubRequest>(key);
-            Assert.IsNull(retrievedValue);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(CacheKeyNotFoundException))]
         public void Set_WithAbsoluteExpiry()
         {
             var cache = Cache.Get(CacheType.Null);
@@ -33,10 +34,10 @@ namespace Sixeyed.Caching.Tests.Caching
             cache.Set(key, value, expiresAt);
             Assert.IsFalse(cache.Exists(key));
             var retrievedValue = cache.Get<StubRequest>(key);
-            Assert.IsNull(retrievedValue);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(CacheKeyNotFoundException))]
         public void Set_WithSlidingExpiry()
         {
             var cache = Cache.Get(CacheType.Null);
@@ -46,10 +47,10 @@ namespace Sixeyed.Caching.Tests.Caching
             cache.Set(key, value, lifespan);
             Assert.IsFalse(cache.Exists(key));
             var retrievedValue = cache.Get<StubRequest>(key);
-            Assert.IsNull(retrievedValue);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(CacheKeyNotFoundException))]
         public void Set_ThenRemove()
         {
             var cache = Cache.Get(CacheType.Null);
@@ -59,6 +60,7 @@ namespace Sixeyed.Caching.Tests.Caching
             Assert.IsFalse(cache.Exists(key));
             cache.Remove(key);
             Assert.IsFalse(cache.Exists(key));
+            var retrievedValue = cache.Get<StubRequest>(key);
         }
     }
 }

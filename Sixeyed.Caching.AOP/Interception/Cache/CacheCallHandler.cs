@@ -49,8 +49,13 @@ namespace Sixeyed.Caching.AOP.Interception.Cache
             var targetCategory = InstrumentCacheRequest(input);
             var returnType = ((MethodInfo)input.MethodBase).ReturnType;
             var cacheKey = CacheKeyBuilder.GetCacheKey(input, serializer);
-            var cachedValue = cache.Get(returnType, cacheKey, cacheAttribute.SerializationFormat);
-            if (cachedValue == null)
+            try
+            {
+                var cachedValue = cache.Get(returnType, cacheKey, cacheAttribute.SerializationFormat);
+                InstrumentCacheHit(targetCategory, input);
+                return input.CreateMethodReturn(cachedValue);
+            }
+            catch (CacheKeyNotFoundException)
             {
                 InstrumentCacheMiss(targetCategory, input);
                 //call the intended method to set the return value
@@ -70,11 +75,6 @@ namespace Sixeyed.Caching.AOP.Interception.Cache
                 }
                 return methodReturn;
             }
-            else
-            {
-                InstrumentCacheHit(targetCategory, input);
-            }
-            return input.CreateMethodReturn(cachedValue);
         }
 
         private void InstrumentCacheHit(PerformanceCounterCategoryMetadata targetCategory,IMethodInvocation input)
