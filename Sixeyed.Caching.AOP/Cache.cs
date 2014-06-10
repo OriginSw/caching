@@ -77,5 +77,13 @@ namespace Sixeyed.Caching.AOP
                 return Get(CacheType.Memcached);
             }
         }
+
+        public static ICache Couchbase
+        {
+            get
+            {
+                return Get(CacheType.Couchbase);
+            }
+        }
     }
 }

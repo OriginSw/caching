@@ -16,6 +16,8 @@ namespace Sixeyed.Caching
 
         AzureTableStorage,
 
-        Disk
+        Disk,
+
+        Couchbase
     }
 }
