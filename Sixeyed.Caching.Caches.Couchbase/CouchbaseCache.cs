@@ -14,6 +14,11 @@ namespace Sixeyed.Caching.Caches.Couchbase
             get { return CacheType.Couchbase; }
         }
 
+        protected override bool ItemsNeedSerializing
+        {
+            get { return true; }
+        }
+
         protected override void InitialiseInternal()
         {
             if (_cache == null)

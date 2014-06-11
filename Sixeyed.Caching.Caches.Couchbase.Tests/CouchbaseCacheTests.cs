@@ -55,6 +55,18 @@ namespace Sixeyed.Caching.Caches.Couchbase.Tests
         }
 
         [TestMethod]
+        public void Set_ValueType()
+        {
+            var key = Guid.NewGuid().ToString();
+            var value = 1;
+            Assert.IsFalse(_cache.Exists(key));
+            _cache.Set(key, value);
+            Assert.IsTrue(_cache.Exists(key));
+            var retrievedValue = _cache.Get<int>(key);
+            Assert.AreEqual(value, retrievedValue);
+        }
+
+        [TestMethod]
         public void Set_WithAbsoluteExpiry()
         {
             var key = Guid.NewGuid().ToString();
