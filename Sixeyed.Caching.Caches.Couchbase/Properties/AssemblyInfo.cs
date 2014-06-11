@@ -5,14 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sixeyed.Caching.Caches.Couchbase")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Sixeyed.Caching.Caches.Couchbase-Bardock")]
+[assembly: AssemblyDescription("Couchbase cache implementation for Sixeyed.Caching.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Sixeyed.Caching.Caches.Couchbase")]
+
+[assembly: AssemblyCompany("bardock")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -34,3 +32,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0-beta1")]

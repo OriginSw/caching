@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Sixeyed.Caching-Bardock</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/bardock/caching</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/1980715?s=128</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright 2014</copyright>
+    <tags>A C# framework library for wrapping .NET cache access, including the MemoryCache, AppFabric Cache, Memcached and a disk cache. Use any cache provider in AOP-style, or as an ASP.NET output cache.caching cache memcached memorycache appfabric aop outputcacheprovider</tags>
+  </metadata>
+</package>
