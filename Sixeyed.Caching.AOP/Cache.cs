@@ -46,6 +46,14 @@ namespace Sixeyed.Caching.AOP
             }
         }
 
+        public static ICache AspNet
+        {
+            get
+            {
+                return Get(CacheType.AspNet);
+            }
+        }
+
         public static ICache AppFabric
         {
             get

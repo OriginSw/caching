@@ -84,6 +84,7 @@
     <Compile Include="Caching\Caches\DefaultCacheTests.cs" />
     <Compile Include="Caching\Caches\MemcachedCacheTests.cs" />
     <Compile Include="Caching\Caches\DiskCacheTests.cs" />
+    <Compile Include="Caching\Caches\AspNetCacheTests.cs" />
     <Compile Include="Caching\Caches\NullCacheTests.cs" />
     <Compile Include="Caching\Caches\MemoryCacheTests.cs" />
     <Compile Include="Caching\CacheBaseTests.cs" />

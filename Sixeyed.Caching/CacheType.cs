@@ -7,8 +7,10 @@ namespace Sixeyed.Caching
         /// No cache type set
         /// </summary>
         Null = 0,
-        
+
         Memory,
+
+        AspNet,
 
         AppFabric,
 

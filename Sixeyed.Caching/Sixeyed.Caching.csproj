@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheKeyBuilder.cs" />
+    <Compile Include="Caches\AspNetCache.cs" />
     <Compile Include="Spec\CacheValueCastException.cs" />
     <Compile Include="Spec\CacheKeyNotFoundException.cs" />
     <Compile Include="Configuration\Elements\EncryptionElement.cs" />
