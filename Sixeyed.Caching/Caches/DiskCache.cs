@@ -1,11 +1,10 @@
-﻿using Sixeyed.Caching.Configuration;
-using Sixeyed.Caching.Cryptography;
-using Sixeyed.Caching.Logging;
-using Sixeyed.Caching.Serialization;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Sixeyed.Caching.Configuration;
+using Sixeyed.Caching.Logging;
 
 namespace Sixeyed.Caching.Caches
 {
@@ -228,6 +227,12 @@ namespace Sixeyed.Caching.Caches
         {
             var size = new DirectoryInfo(_directory).GetFiles().Sum(x => x.Length);
             return (size / (1024 * 1024)) > CacheConfiguration.Current.DiskCache.MaxSizeInMb;
+        }
+
+        protected override List<string> GetAllKeys()
+        {
+            // TODO
+            throw new NotImplementedException();
         }
     }
 }

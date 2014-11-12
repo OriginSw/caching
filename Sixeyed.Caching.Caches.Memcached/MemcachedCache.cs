@@ -1,7 +1,8 @@
-﻿using Enyim.Caching;
+﻿using System;
+using System.Collections.Generic;
+using Enyim.Caching;
 using Enyim.Caching.Memcached;
 using Sixeyed.Caching.Logging;
-using System;
 
 namespace Sixeyed.Caching.Caches.Memcached
 {
@@ -54,6 +55,12 @@ namespace Sixeyed.Caching.Caches.Memcached
         protected override bool ExistsInternal(string key)
         {
             return GetInternal(key) != null;
+        }
+
+        protected override List<string> GetAllKeys()
+        {
+            // TODO
+            throw new NotImplementedException();
         }
     }
 }

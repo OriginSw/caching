@@ -1,11 +1,12 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Sixeyed.Caching.Caches.AzureStorage.TableStorage;
 using Sixeyed.Caching.Configuration;
 using Sixeyed.Caching.Logging;
-using System;
-using System.Configuration;
-using System.Threading.Tasks;
 
 namespace Sixeyed.Caching.Caches.AzureStorage
 {
@@ -117,6 +118,12 @@ namespace Sixeyed.Caching.Caches.AzureStorage
             var account = GetStorageAccount();
             var tableClient = account.CreateCloudTableClient();
             return tableClient.GetTableReference(typeof(CachedEntity).Name);
-        }         
+        }
+
+        protected override List<string> GetAllKeys()
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
     }
 }

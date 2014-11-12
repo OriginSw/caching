@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\CacheConfiguration.cs" />
     <Compile Include="CouchbaseCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sixeyed.Caching.Configuration;
 using Sixeyed.Caching.Logging;
 using sys = System.Web.Caching;
@@ -78,6 +79,17 @@ namespace Sixeyed.Caching.Caches
         protected override void RemoveInternal(string key)
         {
             _cache.Remove(key);
+        }
+
+        protected override List<string> GetAllKeys()
+        {
+            var keys = new List<string>();
+            var enumerator = _cache.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                keys.Add(enumerator.Key.ToString());
+            }
+            return keys;
         }
     }
 }

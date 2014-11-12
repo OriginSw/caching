@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Sixeyed.Caching.Caches
 {
@@ -36,6 +34,11 @@ namespace Sixeyed.Caching.Caches
         protected override bool ExistsInternal(string key)
         {
             return false;
+        }
+
+        protected override List<string> GetAllKeys()
+        {
+            return new List<string>();
         }
     }
 }

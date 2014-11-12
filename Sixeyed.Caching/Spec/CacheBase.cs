@@ -1,10 +1,12 @@
-﻿using Sixeyed.Caching.Caches;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Caching;
+using Sixeyed.Caching.Caches;
 using Sixeyed.Caching.Configuration;
 using Sixeyed.Caching.Cryptography;
 using Sixeyed.Caching.Logging;
 using Sixeyed.Caching.Serialization;
-using System;
-using System.Web.Caching;
 
 namespace Sixeyed.Caching
 {
@@ -126,6 +128,24 @@ namespace Sixeyed.Caching
             return PostProcess(type, key, item, serializationFormat);
         }
 
+        protected abstract List<string> GetAllKeys();
+
+        public Dictionary<string, object> GetAll(Type type, SerializationFormat serializationFormat = SerializationFormat.Null)
+        {
+            return this.GetAllKeys()
+                .ToDictionary(
+                    key => key, 
+                    key => this.Get(type, key, serializationFormat));
+        }
+
+        public Dictionary<string, T> GetAll<T>(SerializationFormat serializationFormat = SerializationFormat.Null)
+        {
+            return this.GetAllKeys()
+                .ToDictionary(
+                    key => key, 
+                    key => this.Get<T>(key, serializationFormat));
+        }
+
         public override void Remove(string key)
         {
             try
@@ -135,6 +155,20 @@ namespace Sixeyed.Caching
             catch (Exception ex)
             {
                 Log.Warn("CacheBase.Remove - failed, item not cached. Message: {0}", ex.Message);
+            }
+        }
+
+        public void RemoveAll()
+        {
+            this.RemoveAll(keyPrefix: null);
+        }
+
+        public void RemoveAll(string keyPrefix)
+        {
+            foreach (var key in this.GetAllKeys())
+            {
+                if(keyPrefix == null || key.StartsWith(keyPrefix))
+                    this.Remove(key);
             }
         }
 
@@ -277,5 +311,6 @@ namespace Sixeyed.Caching
         }
 
         #endregion
+
     }
 }

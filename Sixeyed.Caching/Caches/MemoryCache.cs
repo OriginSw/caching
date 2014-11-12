@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sixeyed.Caching.Configuration;
 using Sixeyed.Caching.Logging;
 using sys = System.Runtime.Caching;
@@ -90,6 +91,12 @@ namespace Sixeyed.Caching.Caches
             {
                 _cache.Remove(key);
             }
+        }
+
+        protected override List<string> GetAllKeys()
+        {
+            // TODO
+            throw new NotImplementedException();
         }
     }
 }

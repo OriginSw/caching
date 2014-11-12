@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Couchbase;
 using Enyim.Caching.Memcached;
 using Sixeyed.Caching.Logging;
@@ -59,6 +61,16 @@ namespace Sixeyed.Caching.Caches.Couchbase
         protected override bool ExistsInternal(string key)
         {
             return GetInternal(key) != null;
+        }
+
+        protected override List<string> GetAllKeys()
+        {
+            return this._cache.GetView(
+                    designName: Configuration.CacheConfiguration.Current.AllKeysDesign,
+                    viewName: Configuration.CacheConfiguration.Current.AllKeysView, 
+                    urlEncode: true)
+                .Select(x => x.ItemId)
+                .ToList();
         }
     }
 }

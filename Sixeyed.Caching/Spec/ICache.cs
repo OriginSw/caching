@@ -65,10 +65,36 @@ namespace Sixeyed.Caching
         T Get<T>(string key, SerializationFormat serializationFormat = SerializationFormat.Null);
 
         /// <summary>
+        /// Retrieve all keys and values from cache
+        /// </summary>
+        /// <param name="serializationFormat"></param>
+        /// <returns>Dictionary with cached keys and values</returns>
+        Dictionary<string, object> GetAll(Type type, SerializationFormat serializationFormat = SerializationFormat.Null);
+
+        /// <summary>
+        /// Retrieve all keys and values from cache
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializationFormat"></param>
+        /// <returns>Dictionary with cached keys and values</returns>
+        Dictionary<string, T> GetAll<T>(SerializationFormat serializationFormat = SerializationFormat.Null);
+
+        /// <summary>
         /// Removes the value for the given key from the cache
         /// </summary>
         /// <param name="key"></param>
         void Remove(string key);
+
+        /// <summary>
+        /// Removes all the cached values
+        /// </summary>
+        void RemoveAll();
+
+        /// <summary>
+        /// Removes the values stored with a key that starts with specified prefix
+        /// </summary>
+        /// <param name="keyPrefix"></param>
+        void RemoveAll(string keyPrefix);
 
         /// <summary>
         /// Returns whether the cache contains a value for the given key

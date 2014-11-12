@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sixeyed.Caching.Extensions;
+using System.Linq;
 using System.Threading;
 using Sixeyed.Caching;
 using Sixeyed.Caching.Tests.Stubs;
@@ -91,6 +92,68 @@ namespace Sixeyed.Caching.Tests.Caching
             Assert.IsTrue(Cache.AspNet.Exists(key));
             Cache.AspNet.Remove(key);
             Assert.IsFalse(Cache.AspNet.Exists(key));
+        }
+
+        [TestMethod]
+        public void Set_ThenGetAll()
+        {
+            var key1 = Guid.NewGuid().ToString();
+            var value1 = StubRequest.GetRequest();
+            Cache.AspNet.Set(key1, value1);
+
+            var key2 = Guid.NewGuid().ToString();
+            var value2 = StubRequest.GetRequest();
+            Cache.AspNet.Set(key2, value2);
+
+            var all = Cache.AspNet.GetAll<StubRequest>();
+            Assert.IsNotNull(all);
+            Assert.AreEqual(2, all.Count());
+            Assert.IsTrue(all.ContainsKey(key1));
+            Assert.AreEqual(value1.Id, all[key1].Id);
+            Assert.IsTrue(all.ContainsKey(key2));
+            Assert.AreEqual(value2.Id, all[key2].Id);
+        }
+
+        [TestMethod]
+        public void Set_ThenRemoveAll()
+        {
+            var key1 = Guid.NewGuid().ToString();
+            var value1 = StubRequest.GetRequest();
+            Cache.AspNet.Set(key1, value1);
+
+            var key2 = Guid.NewGuid().ToString();
+            var value2 = StubRequest.GetRequest();
+            Cache.AspNet.Set(key2, value2);
+
+            Assert.IsTrue(Cache.AspNet.Exists(key1));
+            Assert.IsTrue(Cache.AspNet.Exists(key2));
+
+            Cache.AspNet.RemoveAll();
+
+            Assert.IsFalse(Cache.AspNet.Exists(key1));
+            Assert.IsFalse(Cache.AspNet.Exists(key2));
+        }
+
+        [TestMethod]
+        public void Set_ThenRemoveAllByKeyPrefix()
+        {
+            const string keyPrefix = "PREFIX_";
+
+            var key1 = keyPrefix + Guid.NewGuid().ToString();
+            var value1 = StubRequest.GetRequest();
+            Cache.AspNet.Set(key1, value1);
+
+            var key2 = Guid.NewGuid().ToString();
+            var value2 = StubRequest.GetRequest();
+            Cache.AspNet.Set(key2, value2);
+
+            Assert.IsTrue(Cache.AspNet.Exists(key1));
+            Assert.IsTrue(Cache.AspNet.Exists(key2));
+
+            Cache.AspNet.RemoveAll(keyPrefix);
+
+            Assert.IsFalse(Cache.AspNet.Exists(key1));
+            Assert.IsTrue(Cache.AspNet.Exists(key2));
         }
 
         [TestMethod]
