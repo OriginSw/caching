@@ -1,36 +1,22 @@
-using log4net.Config;
 using Sixeyed.Caching.Extensions;
 using System;
 using System.Collections.Generic;
+using Bardock.Utils.Logger;
 
 namespace Sixeyed.Caching.Logging
 {
     /// <summary>
-    /// Log class wrapping configured log4net appenders
+    /// Log wrapper
     /// </summary>
     public class Log
     {
-        private static Dictionary<string, Logger> _loggers = new Dictionary<string, Logger>();
-        private static object _loggerSyncLock = new object();        
-
-        private static Logger GetLogger(string loggerName = null)
+        private static ILog GetLogger(string loggerName = null)
         {
             if (loggerName.IsNullOrEmpty())
             {
-                loggerName = GetDefaultLoggerName();
+                loggerName = LoggerName.Default;
             }
-            if (!_loggers.ContainsKey(loggerName))
-            {
-                lock (_loggerSyncLock)
-                {
-                    if (!_loggers.ContainsKey(loggerName))
-                    {
-                        XmlConfigurator.Configure();
-                        _loggers[loggerName] = new Logger(loggerName);
-                    }
-                }
-            }
-            return _loggers[loggerName];
+            return LogManager.Default.GetLog(loggerName);
         }
 
         public static string GetDefaultLoggerName()
@@ -43,7 +29,7 @@ namespace Sixeyed.Caching.Logging
         /// </summary>
         /// <param name="loggerName"></param>
         /// <returns></returns>
-        public static Logger Using(string loggerName)
+        public static ILog Using(string loggerName)
         {
             return GetLogger(loggerName);
         }
@@ -55,7 +41,7 @@ namespace Sixeyed.Caching.Logging
         /// <param name="args">Log message arguments</param>
         public static void Debug(string message, params object[] args)
         {
-            GetLogger().Debug(message, args);
+            GetLogger().Debug(string.Format(message, args));
         }
 
         /// <summary>
@@ -65,7 +51,7 @@ namespace Sixeyed.Caching.Logging
         /// <param name="args">Log message arguments</param>
         public static void Info(string message, params object[] args)
         {
-            GetLogger().Info(message, args);
+            GetLogger().Info(string.Format(message, args));
         }
 
         /// <summary>
@@ -75,7 +61,7 @@ namespace Sixeyed.Caching.Logging
         /// <param name="args">Log message arguments</param>
         public static void Warn(string message, params object[] args)
         {
-            GetLogger().Warn(message, args);
+            GetLogger().Warn(string.Format(message, args));
         }
 
         /// <summary>
@@ -85,7 +71,7 @@ namespace Sixeyed.Caching.Logging
         /// <param name="args">Log message arguments</param>
         public static void Error(string message, params object[] args)
         {
-            GetLogger().Error(message, args);
+            GetLogger().Error(string.Format(message, args));
         }
         
         /// <summary>
@@ -96,7 +82,7 @@ namespace Sixeyed.Caching.Logging
         /// <param name="args">Log message arguments</param>
         public static void Error(Exception ex, string message, params object[] args)
         {
-            GetLogger().Error(ex, message, args);
+            GetLogger().Error(string.Format(message, args), ex);
         }
         /// <summary>
         /// Formats and writes a FATAL-level message to the log, using the log4net configuration
@@ -105,9 +91,8 @@ namespace Sixeyed.Caching.Logging
         /// <param name="args">Log message arguments</param>
         public static void Fatal(string message, params object[] args)
         {
-            GetLogger().Fatal(message, args);
+            GetLogger().Fatal(string.Format(message, args));
         }
-
 
         private struct LoggerName
         {
