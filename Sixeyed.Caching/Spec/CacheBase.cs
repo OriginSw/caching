@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Caching;
+using Bardock.Utils.Sync;
 using Sixeyed.Caching.Caches;
 using Sixeyed.Caching.Configuration;
 using Sixeyed.Caching.Cryptography;
@@ -15,7 +16,9 @@ namespace Sixeyed.Caching
     /// </summary>
     public abstract class CacheBase : OutputCacheProvider, ICache
     {
+        private static readonly StringLocker _locker = new StringLocker();
         private static NullCache _nullCache = new NullCache();
+
         private CacheBase _current;
         private bool _initialised;
 
@@ -165,10 +168,14 @@ namespace Sixeyed.Caching
 
         public void RemoveAll(string keyPrefix)
         {
-            foreach (var key in this.GetAllKeys())
+            // Lock by prefix. If prefix is NULL, lock globally
+            lock (keyPrefix != null ? (object)_locker.GetLockObject(keyPrefix) : _locker)
             {
-                if(keyPrefix == null || key.StartsWith(keyPrefix))
-                    this.Remove(key);
+                foreach (var key in this.GetAllKeys())
+                {
+                    if (keyPrefix == null || key.StartsWith(keyPrefix))
+                        this.Remove(key);
+                }
             }
         }
 

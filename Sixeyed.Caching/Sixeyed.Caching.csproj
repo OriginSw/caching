@@ -42,6 +42,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bardock.Utils">
+      <HintPath>..\packages\Bardock.Utils.2.1.2\lib\net45\Bardock.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="Bardock.Utils.Logger, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Bardock.Utils.Logger.3.0.1\lib\net45\Bardock.Utils.Logger.dll</HintPath>
