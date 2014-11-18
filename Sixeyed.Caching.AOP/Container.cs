@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using unity = Microsoft.Practices.Unity;
+using Sixeyed.Caching.Caches;
 
 namespace Sixeyed.Caching.AOP
 {
@@ -227,10 +228,11 @@ namespace Sixeyed.Caching.AOP
 
             var fromType = typeof (T);
             var toTypes = from t in assembly.GetTypes()
-                                        where t.IsClass
-                                              && !t.IsAbstract
-                                              && t.GetInterface(fromType.Name) != null
-                                        select t;
+                            where t.IsClass
+                                    && !t.IsAbstract
+                                    && t.GetInterface(fromType.Name) != null
+                                    && t != typeof(MultiLevelCache)
+                            select t;
 
             if (toTypes.Count() <= 0) return;            
             foreach (var toType in toTypes)

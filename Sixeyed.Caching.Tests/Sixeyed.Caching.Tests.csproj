@@ -94,6 +94,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Caching\Caches\AppFabricCacheTests.cs" />
+    <Compile Include="Caching\Caches\MultiLevelCacheTests.cs" />
     <Compile Include="Caching\Caches\AzureTableStorageCacheTests.cs" />
     <Compile Include="Caching\Caches\DefaultCacheTests.cs" />
     <Compile Include="Caching\Caches\MemcachedCacheTests.cs" />
