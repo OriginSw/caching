@@ -11,10 +11,10 @@ namespace Sixeyed.Caching.Caches
     /// </summary>
     public class MultiLevelCache : ICache
     {
-        protected ICache _level1;
-        protected ICache _level2;
-        protected bool _synchronizable;
-        protected TimeSpan _level1Expiration;
+        public ICache Level1 { get; protected set; }
+        public ICache Level2 { get; protected set; }
+        public bool Synchronizable { get; protected set; }
+        public TimeSpan Level1Expiration { get; protected set; }
 
         /// <param name="level1">ICache implementation for level 1</param>
         /// <param name="level2">ICache implementation for level 2</param>
@@ -26,48 +26,48 @@ namespace Sixeyed.Caching.Caches
             TimeSpan level1Expiration,
             bool synchronizable = false)
         {
-            this._level1 = level1;
-            this._level2 = level2;
-            this._level1Expiration = level1Expiration;
-            this._synchronizable = synchronizable;
+            this.Level1 = level1;
+            this.Level2 = level2;
+            this.Level1Expiration = level1Expiration;
+            this.Synchronizable = synchronizable;
             Initialise();
         }
 
         public CacheType CacheType
         {
-            get { return this._level2.CacheType; }
+            get { return this.Level2.CacheType; }
         }
 
         public Serializer Serializer { get; set; }
 
         public void Initialise()
         {
-            this._level1.Initialise();
-            this._level2.Initialise();
+            this.Level1.Initialise();
+            this.Level2.Initialise();
         }
 
         public void Set(string key, object value, TimeSpan validFor, SerializationFormat serializationFormat = SerializationFormat.Null)
         {
-            this._level2.Set(key, value, validFor, serializationFormat);
+            this.Level2.Set(key, value, validFor, serializationFormat);
             this.SetAtLevel1(key, value, serializationFormat);
         }
 
         public void Set(string key, object value, DateTime expiresAt, SerializationFormat serializationFormat = SerializationFormat.Null)
         {
-            this._level2.Set(key, value, expiresAt, serializationFormat);
+            this.Level2.Set(key, value, expiresAt, serializationFormat);
             this.SetAtLevel1(key, value, serializationFormat);
         }
 
         public void Set(string key, object value, SerializationFormat serializationFormat = SerializationFormat.Null)
         {
-            this._level2.Set(key, value, serializationFormat);
+            this.Level2.Set(key, value, serializationFormat);
             this.SetAtLevel1(key, value, serializationFormat);
         }
 
         protected void SetAtLevel1(string key, object value, SerializationFormat serializationFormat = SerializationFormat.Null)
         {
             // TODO validate that level1 expiration is lower or equal than level2
-            this._level1.Set(key, value, this._level1Expiration, serializationFormat);
+            this.Level1.Set(key, value, this.Level1Expiration, serializationFormat);
         }
 
         public T Get<T>(string key, SerializationFormat serializationFormat = SerializationFormat.Null)
@@ -84,13 +84,13 @@ namespace Sixeyed.Caching.Caches
         {
             try
             {
-                return this._level1.Get(type, key, serializationFormat);
+                return this.Level1.Get(type, key, serializationFormat);
             }
             catch (CacheKeyNotFoundException)
             {
-                var value = this._level2.Get(type, key, serializationFormat);
+                var value = this.Level2.Get(type, key, serializationFormat);
 
-                this._level1.Set(key, value, this._level1Expiration, serializationFormat);
+                this.Level1.Set(key, value, this.Level1Expiration, serializationFormat);
 
                 return value;
             }
@@ -98,44 +98,44 @@ namespace Sixeyed.Caching.Caches
 
         public Dictionary<string, object> GetAll(Type type, SerializationFormat serializationFormat = SerializationFormat.Null)
         {
-            return this._level2.GetAll(type, serializationFormat);
+            return this.Level2.GetAll(type, serializationFormat);
         }
 
         public Dictionary<string, T> GetAll<T>(SerializationFormat serializationFormat = SerializationFormat.Null)
         {
-            return this._level2.GetAll<T>(serializationFormat);
+            return this.Level2.GetAll<T>(serializationFormat);
         }
 
         private void ValidateSynchronizable()
         {
-            if (!this._synchronizable)
+            if (!this.Synchronizable)
                 throw new InvalidOperationException("Operation is not supported because first level is not distributed and cannot be syncronized");
         }
 
         public void Remove(string key)
         {
             ValidateSynchronizable();
-            this._level2.Remove(key);
-            this._level1.Remove(key);
+            this.Level2.Remove(key);
+            this.Level1.Remove(key);
         }
 
         public void RemoveAll()
         {
             ValidateSynchronizable();
-            this._level2.RemoveAll();
-            this._level1.RemoveAll();
+            this.Level2.RemoveAll();
+            this.Level1.RemoveAll();
         }
 
         public void RemoveAll(string keyPrefix)
         {
             ValidateSynchronizable();
-            this._level2.RemoveAll(keyPrefix);
-            this._level1.RemoveAll(keyPrefix);
+            this.Level2.RemoveAll(keyPrefix);
+            this.Level1.RemoveAll(keyPrefix);
         }
 
         public bool Exists(string key)
         {
-            return this._level1.Exists(key) || this._level2.Exists(key);
+            return this.Level1.Exists(key) || this.Level2.Exists(key);
         }
     }
 }

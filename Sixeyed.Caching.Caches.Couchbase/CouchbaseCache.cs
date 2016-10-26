@@ -9,7 +9,7 @@ namespace Sixeyed.Caching.Caches.Couchbase
 {
     public class CouchbaseCache : CacheBase
     {
-        private CouchbaseClient _cache;
+        public CouchbaseClient Client { get; protected set; }
 
         public override CacheType CacheType
         {
@@ -23,38 +23,38 @@ namespace Sixeyed.Caching.Caches.Couchbase
 
         protected override void InitialiseInternal()
         {
-            if (_cache == null)
+            if (Client == null)
             {
                 Log.Debug("CouchbaseCache.Initialise - initialising");
-                _cache = new CouchbaseClient();
+                Client = new CouchbaseClient();
             }
         }
 
         protected override void SetInternal(string key, object value)
         {
-            _cache.Store(StoreMode.Set, key, value);
+            Client.Store(StoreMode.Set, key, value);
         }
 
         protected override void SetInternal(string key, object value, DateTime expiresAt)
         {
-            _cache.Store(StoreMode.Set, key, value, expiresAt);
+            Client.Store(StoreMode.Set, key, value, expiresAt);
         }
 
         protected override void SetInternal(string key, object value, TimeSpan validFor)
         {
-            _cache.Store(StoreMode.Set, key, value, validFor);
+            Client.Store(StoreMode.Set, key, value, validFor);
         }
 
         protected override object GetInternal(string key)
         {
-            return _cache.Get(key);
+            return Client.Get(key);
         }
 
         protected override void RemoveInternal(string key)
         {
             if (Exists(key))
             {
-                _cache.Remove(key);
+                Client.Remove(key);
             }
         }
 
@@ -65,9 +65,9 @@ namespace Sixeyed.Caching.Caches.Couchbase
 
         protected override List<string> GetAllKeys()
         {
-            return this._cache.GetView(
+            return this.Client.GetView(
                     designName: Configuration.CacheConfiguration.Current.AllKeysDesign,
-                    viewName: Configuration.CacheConfiguration.Current.AllKeysView, 
+                    viewName: Configuration.CacheConfiguration.Current.AllKeysView,
                     urlEncode: true)
                 .Select(x => x.ItemId)
                 .ToList();
