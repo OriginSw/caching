@@ -1,5 +1,15 @@
-:: nuget spec
-set /p version=Version number:
-nuget pack Sixeyed.Caching.Caches.Couchbase.csproj -Prop Configuration=Debug -IncludeReferencedProjects
-nuget push Sixeyed.Caching.Caches.Couchbase-Bardock.%version%.nupkg
+set "project=Sixeyed.Caching.Caches.Couchbase"
+set "localSourcePath=\\Origin-10\NuGetPackages"
+set /p version=Version number: 
+
+:: create package
+nuget pack %project%.csproj -Prop Configuration=Debug -Symbols -IncludeReferencedProjects -Version %version%
+
+:: publish
+::nuget push %project%-Bardock.%version%.nupkg
+
+:: if you want to publish the package to a local source, comment previous line and uncomment the following lines 
+move %project%-Bardock.%version%.nupkg %localSourcePath%
+move %project%-Bardock.%version%.symbols.nupkg %localSourcePath%
+
 pause;

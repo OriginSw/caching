@@ -1,15 +1,20 @@
-﻿using System;
+﻿using Couchbase;
+using Couchbase.Configuration.Client;
+using Couchbase.Configuration.Client.Providers;
+using Couchbase.Core;
+using Sixeyed.Caching.Caches.Couchbase.Configuration;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using Couchbase;
-using Enyim.Caching.Memcached;
-using Sixeyed.Caching.Logging;
 
 namespace Sixeyed.Caching.Caches.Couchbase
 {
-    public class CouchbaseCache : CacheBase
+    public class CouchbaseCache : CacheBase, IDisposable
     {
-        public CouchbaseClient Client { get; protected set; }
+        public BucketConfiguration BucketConfig { get; protected set; }
+
+        private ClientConfiguration _clientConfig;
 
         public override CacheType CacheType
         {
@@ -23,39 +28,51 @@ namespace Sixeyed.Caching.Caches.Couchbase
 
         protected override void InitialiseInternal()
         {
-            if (Client == null)
+            if (_clientConfig == null)
             {
-                Log.Debug("CouchbaseCache.Initialise - initialising");
-                Client = new CouchbaseClient();
+                _clientConfig = _clientConfig ?? new ClientConfiguration((CouchbaseClientSection)ConfigurationManager.GetSection("couchbaseClients/couchbase"));
+                BucketConfig = _clientConfig.BucketConfigs.Values.FirstOrDefault();
+            }
+            try
+            {
+                ClusterHelper.Get();
+            }
+            catch (InitializationException)
+            {
+                ClusterHelper.Initialize(_clientConfig);
             }
         }
 
         protected override void SetInternal(string key, object value)
         {
-            Client.Store(StoreMode.Set, key, value);
+            var bucket = ClusterHelper.GetBucket(BucketConfig.BucketName, BucketConfig.Password);
+            bucket.Upsert(key, value);
         }
 
         protected override void SetInternal(string key, object value, DateTime expiresAt)
         {
-            Client.Store(StoreMode.Set, key, value, expiresAt);
+            var validFor = expiresAt - DateTime.Now;
+            var bucket = ClusterHelper.GetBucket(BucketConfig.BucketName, BucketConfig.Password);
+            bucket.Upsert(key, value, validFor);
         }
 
         protected override void SetInternal(string key, object value, TimeSpan validFor)
         {
-            Client.Store(StoreMode.Set, key, value, validFor);
+            var bucket = ClusterHelper.GetBucket(BucketConfig.BucketName, BucketConfig.Password);
+            bucket.Upsert(key, value, validFor);
         }
 
         protected override object GetInternal(string key)
         {
-            return Client.Get(key);
+            var bucket = ClusterHelper.GetBucket(BucketConfig.BucketName, BucketConfig.Password);
+            var doc = bucket.GetDocument<object>(key);
+            return doc.Content;
         }
 
         protected override void RemoveInternal(string key)
         {
-            if (Exists(key))
-            {
-                Client.Remove(key);
-            }
+            var bucket = ClusterHelper.GetBucket(BucketConfig.BucketName, BucketConfig.Password);
+            bucket.Remove(key);
         }
 
         protected override bool ExistsInternal(string key)
@@ -65,12 +82,22 @@ namespace Sixeyed.Caching.Caches.Couchbase
 
         protected override List<string> GetAllKeys()
         {
-            return this.Client.GetView(
-                    designName: Configuration.CacheConfiguration.Current.AllKeysDesign,
-                    viewName: Configuration.CacheConfiguration.Current.AllKeysView,
-                    urlEncode: true)
-                .Select(x => x.ItemId)
-                .ToList();
+            var bucket = ClusterHelper.GetBucket(BucketConfig.BucketName, BucketConfig.Password);
+            var query = bucket.CreateQuery(
+                CacheConfiguration.Current.AllKeysDesign,
+                CacheConfiguration.Current.AllKeysView,
+                CacheConfiguration.Current.DevMode);
+
+            var result = bucket.Query<Dictionary<string, object>>(query);
+
+            var allKeys = result.Rows.Select(x => x.Id).ToList();
+
+            return allKeys;
+        }
+
+        public void Dispose()
+        {
+            ClusterHelper.Close();
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Sixeyed.Caching.Logging;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using Sixeyed.Caching.Logging;
 
 namespace Sixeyed.Caching.Caches.Couchbase.Configuration
 {
@@ -54,12 +50,22 @@ namespace Sixeyed.Caching.Caches.Couchbase.Configuration
         }
 
         /// <summary>
+        /// Returns if the view is executed in development mode
+        /// </summary>
+        [ConfigurationProperty(SettingName.DevMode, DefaultValue = false)]
+        public bool DevMode
+        {
+            get { return (bool)this[SettingName.DevMode]; }
+        }
+
+        /// <summary>
         /// Constants for indexing settings
         /// </summary>
         private struct SettingName
         {
             public const string AllKeysDesign = "allKeysDesign";
             public const string AllKeysView = "allKeysView";
+            public const string DevMode = "devMode";
         }
     }
 }
